@@ -1,6 +1,8 @@
 # SESI4
 
-A new Flutter project.
+NAMA : Faunita Raihan Dz
+NRP : 210514008
+KELAS : 4 SI
 
 ## Getting Started
 
