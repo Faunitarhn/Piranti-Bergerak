@@ -1,4 +1,4 @@
-# project2
+# SESI4
 
 A new Flutter project.
 
