@@ -1,76 +1,106 @@
-import 'dart:ui_web';
-
 import 'package:flutter/material.dart';
+import 'package:project2/model/feed.dart';
 
-class FeedCard extends StatelessWidget {
+class FeedCard extends StatefulWidget {
+  final Feed feed;
+
   const FeedCard({
     super.key,
+    required this.feed,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
+  _FeedCardState createState() => _FeedCardState();
+}
+
+class _FeedCardState extends State<FeedCard> {
+  bool isLiked = false; // State to track if the post is liked
+
+  @override
   Widget build(BuildContext context) {
-    const url = 
-    'https://www.shutterstock.com/image-photo/cartoon-artistic-image-barbie-girl-600nw-2483487385.jpg';
     return Card(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Agar caption dan jumlah like rata kiri
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //header
-          const ListTile(
+          // Header
+          ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(url),
+              backgroundImage: NetworkImage(widget.feed.user.avatar),
             ),
-            title: Text('Faunita'),
-            subtitle: Text('Status'),
-            trailing: Icon(Icons.arrow_right),
+            title: Text(widget.feed.user.name),
+            subtitle: Text(widget.feed.user.place),
+            trailing: const Icon(Icons.arrow_right),
           ),
-          //content
+          // Content
           Image.network(
-            'https://cdns-images.dzcdn.net/images/artist/a3637460afc61a6def0986862a1e672f/1900x1900-000000-80-0-0.jpg',
+            widget.feed.content.image,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * 0.8,
             fit: BoxFit.cover,
           ),
-          //footer
+          // Footer
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start, // Mengatur ikon di kiri
                   children: [
                     IconButton(
-                      icon: Icon(Icons.favorite_border),
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? Colors.red : Colors.black,
+                      ),
                       onPressed: () {
-                        // Add your like action here
+                        setState(() {
+                          isLiked = !isLiked; // Toggle the like state
+                        });
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.chat_bubble_outline),
+                      icon: const Icon(Icons.comment),
                       onPressed: () {
-                        // Add your comment action here
+                        // Comment button action
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.share),
+                      icon: const Icon(Icons.share),
                       onPressed: () {
-                        // Add your share action here
-                      },
-                    ),
-                    const Spacer(), // Menambahkan spacer untuk memisahkan ikon
-                    IconButton(
-                      icon: Icon(Icons.bookmark_border),
-                      onPressed: () {
-                        // Add your save action here
+                        // Share button action
                       },
                     ),
                   ],
                 ),
-                const SizedBox(height: 4.0), // Spasi antara row dan teks
-                const Text('1,234 likes'), // Ganti dengan variabel dinamis jika perlu
-                const SizedBox(height: 4.0), // Spasi antara jumlah like dan caption
-                const Text('cantiknyoooooo'),
+                const Icon(Icons.bookmark_border),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.feed.content.likes,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      widget.feed.user.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        widget.feed.content.description,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

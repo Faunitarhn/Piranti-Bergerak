@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project2/controller/feed_controller.dart';
 import 'package:project2/view/feed_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
 class  HomePageState extends State <HomePage> {
   @override
   Widget build(BuildContext context) {
+    var feedController = FeedController();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -20,17 +22,12 @@ class  HomePageState extends State <HomePage> {
       ),
       ),
       ),
-      body: ListView(
-        children: [
-          FeedCard(),
-          FeedCard(),
-          FeedCard(),
-          FeedCard(),
-          FeedCard(),
-          FeedCard(),
-          FeedCard(),
-        ],
-      ),
+      body: ListView.builder(
+        itemCount: feedController.feeds.length,
+        itemBuilder: (context, index) => FeedCard(
+          feed: feedController.feeds[index],
+          )
+          )
     );
   }
 }
