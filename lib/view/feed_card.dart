@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project2/controller/feed_controller.dart';
 import 'package:project2/model/feed.dart';
+import 'package:provider/provider.dart';
 
 class FeedCard extends StatefulWidget {
   final Feed feed;
@@ -48,15 +50,12 @@ class _FeedCardState extends State<FeedCard> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(
-                        isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: isLiked ? Colors.red : Colors.black,
-                      ),
                       onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked; // Toggle the like state
-                        });
+                        context.read<FeedController>().like(widget.feed);
                       },
+                      icon: Icon(widget.feed.content.isLike
+                          ? Icons.favorite
+                          : Icons.favorite_outline),
                     ),
                     IconButton(
                       icon: const Icon(Icons.comment),
