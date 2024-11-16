@@ -10,18 +10,27 @@ class FeedController extends ChangeNotifier {
     return feeds[index];
   }
 
-  like(Feed feed) {
-    feeds
-            .firstWhere(
-              (element) => element.id == feed.id,
-            )
-            .content
-            .isLike ==
-        !feed.content.isLike;
+  // Metode untuk toggle like pada feed
+  void like(Feed feed) {
+    Feed targetFeed = feeds.firstWhere((element) => element.id == feed.id);
+    targetFeed.content.isLike = !targetFeed.content.isLike;
     notifyListeners();
   }
 
-  refresh() {
+  // Metode untuk toggle bookmark pada feed
+  void toggleBookmark(Feed feed) {
+    Feed targetFeed = feeds.firstWhere((element) => element.id == feed.id);
+    targetFeed.isBookmarked = !targetFeed.isBookmarked;
+    notifyListeners();
+  }
+
+  // Mendapatkan semua feed yang di-bookmark
+  List<Feed> getBookmarkedFeeds() {
+    return feeds.where((feed) => feed.isBookmarked).toList();
+  }
+
+  // Refresh feeds dari repository
+  void refresh() {
     feeds = FeedRepository().fetch();
     notifyListeners();
   }

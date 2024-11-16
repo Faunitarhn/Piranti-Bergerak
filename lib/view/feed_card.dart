@@ -12,15 +12,14 @@ class FeedCard extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _FeedCardState createState() => _FeedCardState();
 }
 
 class _FeedCardState extends State<FeedCard> {
-  bool isLiked = false; // State to track if the post is liked
-
   @override
   Widget build(BuildContext context) {
+    final feedController = context.read<FeedController>();
+
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,11 +50,18 @@ class _FeedCardState extends State<FeedCard> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        context.read<FeedController>().like(widget.feed);
+                        setState(() {
+                          feedController.like(widget.feed);
+                        });
                       },
-                      icon: Icon(widget.feed.content.isLike
-                          ? Icons.favorite
-                          : Icons.favorite_outline),
+                      icon: Icon(
+                        widget.feed.content.isLike
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        color: widget.feed.content.isLike
+                            ? Colors.red
+                            : Colors.grey,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.comment),
@@ -71,7 +77,21 @@ class _FeedCardState extends State<FeedCard> {
                     ),
                   ],
                 ),
-                const Icon(Icons.bookmark_border),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      feedController.toggleBookmark(widget.feed);
+                    });
+                  },
+                  icon: Icon(
+                    widget.feed.isBookmarked
+                        ? Icons.bookmark
+                        : Icons.bookmark_border,
+                    color: widget.feed.isBookmarked
+                        ? Colors.blue
+                        : Colors.grey,
+                  ),
+                ),
               ],
             ),
           ),
@@ -81,7 +101,7 @@ class _FeedCardState extends State<FeedCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.feed.content.likes,
+                  '${widget.feed.content.likes} likes', // Display like count
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),

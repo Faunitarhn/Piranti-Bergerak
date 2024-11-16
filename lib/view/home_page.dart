@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project2/controller/feed_controller.dart';
+import 'package:project2/view/feed_bookmark.dart';
 import 'package:project2/view/feed_card.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,17 @@ class HomePageState extends State<HomePage> {
           'Faun App',
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
+        leading: const Icon(Icons.menu),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const FeedBookmarkPage(),
+              ));
+            },
+            icon: const Icon(Icons.bookmark_outline),
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -27,10 +39,11 @@ class HomePageState extends State<HomePage> {
           controller.refresh();
         },
         child: ListView.builder(
-            itemCount: controller.feeds.length,
-            itemBuilder: (context, index) => FeedCard(
-                  feed: controller.feed(index),
-                )),
+          itemCount: controller.feeds.length,
+          itemBuilder: (context, index) => FeedCard(
+            feed: controller.feed(index),
+          ),
+        ),
       ),
     );
   }
