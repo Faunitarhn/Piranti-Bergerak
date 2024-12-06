@@ -78,19 +78,15 @@ class _FeedCardState extends State<FeedCard> {
                   ],
                 ),
                 IconButton(
-                  onPressed: () {
-                    setState(() {
-                      feedController.toggleBookmark(widget.feed);
-                    });
-                  },
                   icon: Icon(
-                    widget.feed.isBookmarked
+                    widget.feed.content.isBookmarked
                         ? Icons.bookmark
                         : Icons.bookmark_border,
-                    color: widget.feed.isBookmarked
-                        ? Colors.blue
-                        : Colors.grey,
                   ),
+                  onPressed: () {
+                    // Menggunakan FeedController untuk toggle status bookmark
+                    context.read<FeedController>().toggleBookmark(widget.feed);
+                  },
                 ),
               ],
             ),
@@ -101,7 +97,7 @@ class _FeedCardState extends State<FeedCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${widget.feed.content.likes} likes', // Display like count
+                  widget.feed.content.likes,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),

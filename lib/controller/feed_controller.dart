@@ -6,31 +6,28 @@ class FeedController extends ChangeNotifier {
   List<Feed> feeds = FeedRepository().fetch();
   int get length => feeds.length;
 
+  int get postCount => feeds.length;
+
+  List<Feed> get bookmarkedFeeds =>
+      feeds.where((Element) => Element.content.isBookmarked).toList();
+
   Feed feed(int index) {
     return feeds[index];
   }
 
-  // Metode untuk toggle like pada feed
-  void like(Feed feed) {
-    Feed targetFeed = feeds.firstWhere((element) => element.id == feed.id);
-    targetFeed.content.isLike = !targetFeed.content.isLike;
+  like(Feed feed) {
+    feeds.firstWhere((Element) => Element.id == feed.id).content.isLike =
+        !feed.content.isLike;
     notifyListeners();
   }
 
-  // Metode untuk toggle bookmark pada feed
-  void toggleBookmark(Feed feed) {
-    Feed targetFeed = feeds.firstWhere((element) => element.id == feed.id);
-    targetFeed.isBookmarked = !targetFeed.isBookmarked;
+  toggleBookmark(Feed feed) {
+    feeds.firstWhere((Element) => Element.id == feed.id).content.isBookmarked =
+        !feed.content.isBookmarked;
     notifyListeners();
   }
 
-  // Mendapatkan semua feed yang di-bookmark
-  List<Feed> getBookmarkedFeeds() {
-    return feeds.where((feed) => feed.isBookmarked).toList();
-  }
-
-  // Refresh feeds dari repository
-  void refresh() {
+  refresh() {
     feeds = FeedRepository().fetch();
     notifyListeners();
   }

@@ -8,18 +8,22 @@ class FeedBookmarkPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookmarkedFeeds =
-        context.watch<FeedController>().getBookmarkedFeeds();
+    final controller = context.watch<FeedController>();
+
+    final bookmarkedFeeds = controller.bookmarkedFeeds;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bookmarked Feeds'),
+        title: const Text(
+          'Bookmarks',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: bookmarkedFeeds.isEmpty
           ? const Center(
               child: Text(
-                'No bookmarked feeds yet.',
-                style: TextStyle(fontSize: 16),
+                'No bookmarks yet!',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             )
           : ListView.builder(

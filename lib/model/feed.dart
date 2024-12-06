@@ -2,13 +2,11 @@ class Feed {
   final int id;
   final User user;
   final Content content;
-  bool isBookmarked; // Properti baru untuk menandai apakah feed di-bookmark
 
   Feed({
     required this.id,
     required this.user,
     required this.content,
-    this.isBookmarked = false, // Default-nya tidak di-bookmark
   });
 }
 
@@ -17,12 +15,14 @@ class Content {
   final String likes;
   final String description;
   bool isLike;
+  bool isBookmarked;
 
   Content({
     required this.image,
     required this.likes,
     required this.description,
     required this.isLike,
+    this.isBookmarked = false,
   });
 }
 
